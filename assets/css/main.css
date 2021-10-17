@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Calibri", sans-serif;
+    background-color: #EAE7DC;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+input {
+    margin: 10px 0;
+    padding: 10px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+
+input:focus, input:hover {
+    box-shadow: 0 0 0 2px #D8C3A5;
+}
+
+button {
+    font-weight: bold;
+    margin: 10px 110px;
+    padding: 15px;
+    background-color: #D8C3A5;
+    border: unset;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #E98074;
+}
+
+p {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.message {
+    border: 2px solid #E85A4F;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.logout {
+    color: #E98074;
+    align-self: center;
+}
+
+.required-fields {
+    text-align: left;
+}
+
+.none {
+    display: none;
+}
+
+.error {
+    border: 2px solid #E85A4F;
+}
+
+.profile-image {
+    border-radius: 25px;
+    width: 200px;
+    align-self: center;
+    margin: 0 0 20px 0;
+}
+
+.required-field-star {
+    color: #E85A4F;
+}
+
+.profile-name {
+    align-self: center;
+    margin: 0 0 20px 0;
+}
+
+.profile-form {
+    box-shadow: 0 0 0 3px #D8C3A5;
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.profile-email {
+    align-self: center;
+    color: #6d9ed7;
+    margin: 0 0 30px 0;
+}
