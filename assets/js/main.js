@@ -11,7 +11,7 @@ $('button[id = "login-btn"]').click(function (e){
         password = $('input[name = "password"]').val();
 
     $.ajax({
-        url: 'includes/signin.php',
+        url: 'http://users.api.loc/signin',
         type: 'POST',
         dataType: 'json',
         data: {
@@ -36,7 +36,7 @@ $('button[id = "login-btn"]').click(function (e){
 });
 
 /*
-    Getting avatar from filed
+    Getting avatar from file
  */
 
 let avatar = false;
@@ -69,7 +69,7 @@ $('button[id = "register-btn"]').click(function (e){
     formData.append('passwordConfirm', passwordConfirm);
 
     $.ajax({
-        url: 'includes/signup.php',
+        url: 'http://users.api.loc/signup',
         type: 'POST',
         dataType: 'json',
         processData: false,
