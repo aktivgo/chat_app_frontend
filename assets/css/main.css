@@ -40,6 +40,10 @@ button {
     border-radius: 5px;
 }
 
+button:hover {
+    transform: scale(1.1);
+}
+
 a {
     font-weight: bold;
     text-decoration: none;
