@@ -1,0 +1,21 @@
+{
+    "name": "aktivgo/php-rest-api",
+    "description": "description",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Vladislav Kochkin",
+            "email": "aktivgo01062001@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/routing": "v5.0.0",
+        "symfony/http-foundation": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "aktivgo\\chat\\": "../"
+        }
+    }
+}
