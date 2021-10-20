@@ -11,8 +11,8 @@ require_once __DIR__ . "/composer/vendor/autoload.php";
 try {
 
     $routeIndex = new Route('/');
-    $routeAuthorization = new Route('/registration');
-    $routeRegistration = new Route('/authorization');
+    $routeAuthorization = new Route('/authorization');
+    $routeRegistration = new Route('/registration');
     $routeProfile = new Route('/profile');
 
     $routes = new RouteCollection();
