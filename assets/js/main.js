@@ -20,15 +20,12 @@ $('button[id = "login-btn"]').click(function (e){
         },
         success(data) {
             if(data.status){
-                document.location.href = '../../profile'
+                document.location.href = '/chat'
             } else{
-
-                if(data.type === 1){
-                    data.fields.forEach(function (field) {
-                        $(`input[name="${field}"]`).addClass('error');
-                    });
-                }
-
+                console.log('dsfsdf');
+                data.fields.forEach(function (field) {
+                    $(`input[name="${field}"]`).addClass('error');
+                });
                 $('.message').removeClass('none').text(data.message);
             }
         }
@@ -78,13 +75,11 @@ $('button[id = "register-btn"]').click(function (e){
         data: formData,
         success(data) {
             if(data.status){
-                document.location.href = '../../templates/authorization-template.html'
+                document.location.href = '/authorization'
             } else{
-                if(data.type === 1){
-                    data.fields.forEach(function (field) {
-                        $(`input[name="${field}"]`).addClass('error');
-                    });
-                }
+                data.fields.forEach(function (field) {
+                    $(`input[name="${field}"]`).addClass('error');
+                });
                 $('.message').removeClass('none').text(data.message);
             }
         }
