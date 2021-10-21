@@ -18,6 +18,7 @@ try {
     $routes = new RouteCollection();
     $routes->add('index', $routeIndex);
     $routes->add('authorization', $routeAuthorization);
+    $routes->add('registration', $routeRegistration);
     $routes->add('chat', $routeChat);
 
     $context = new RequestContext();
