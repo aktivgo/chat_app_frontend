@@ -13,13 +13,13 @@ try {
     $routeIndex = new Route('/');
     $routeAuthorization = new Route('/authorization');
     $routeRegistration = new Route('/registration');
-    $routeProfile = new Route('/profile');
+    $routeChat = new Route('/chat');
 
     $routes = new RouteCollection();
     $routes->add('index', $routeIndex);
     $routes->add('authorization', $routeAuthorization);
     $routes->add('registration', $routeRegistration);
-    $routes->add('profile', $routeProfile);
+    $routes->add('chat', $routeChat);
 
     $context = new RequestContext();
     $context->fromRequest(Request::createFromGlobals());
@@ -47,7 +47,7 @@ if($parameters['_route'] === 'registration') {
     return;
 }
 
-if($parameters['_route'] === 'profile') {
-    require_once 'templates/profile-template.html';
+if($parameters['_route'] === 'chat') {
+    require_once 'templates/chat-template.html';
     return;
 }
