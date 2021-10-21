@@ -78,7 +78,7 @@ $('button[id = "register-btn"]').click(function (e){
         data: formData,
         success(data) {
             if(data.status){
-                document.location.href = '../../authorization'
+                document.location.href = '../../templates/authorization-template.html'
             } else{
                 if(data.type === 1){
                     data.fields.forEach(function (field) {
