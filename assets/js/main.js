@@ -20,9 +20,8 @@ $('button[id = "login-btn"]').click(function (e){
         },
         success(data) {
             if(data.status){
-                document.location.href = '/chat'
+                document.location.href = '/chat?token=' + data.token;
             } else{
-                console.log('dsfsdf');
                 data.fields.forEach(function (field) {
                     $(`input[name="${field}"]`).addClass('error');
                 });

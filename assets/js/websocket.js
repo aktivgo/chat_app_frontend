@@ -1,17 +1,32 @@
-const chatEl = document.getElementById('chat-messages');
-const ws = new WebSocket("ws://127.0.0.1:8000");
+const searchString = new URLSearchParams(window.location.search);
+const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
+
+let name;
+
+$.ajax({
+    url: 'http://users.api.loc/authorization',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+        token: searchString.get('token')
+    },
+    success(data) {
+        name = data.fullName;
+    }
+});
+
 ws.onmessage = (message) => {
     const messages = JSON.parse(message.data);
+    const chat = document.getElementById('chat');
     messages.forEach((val) => {
         const messageEl = document.createElement('div');
         messageEl.appendChild(document.createTextNode(`${val.name}: ${val.message}`));
         chat.appendChild(messageEl);
+        chat.scrollTo(0, chat.scrollHeight);
     })
 }
 const send = (event) => {
     event.preventDefault();
-    // Добавить определение имени
-    const name = 'Джуниор Владислав';
     const message = document.getElementById('message-text').value;
     ws.send(JSON.stringify({
         name, message

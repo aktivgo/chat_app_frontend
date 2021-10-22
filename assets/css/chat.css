@@ -15,13 +15,14 @@ body {
 button {
     color: #989898;
     font-weight: bold;
-    margin: 0 0 0 15px;
-    padding: 10px 7px;
+    margin: 0 0 0 20px;
+    padding: 10px 50px;
     background-color: #fff1d3;
     border: unset;
     cursor: pointer;
     border-radius: 15px;
     transition: transform .2s;
+    display: block;
 }
 
 button:hover {
@@ -89,4 +90,9 @@ input:focus, input:hover {
 
 .chat-form__input {
     width: 80%;
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
 }

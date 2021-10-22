@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 require_once __DIR__ . "/composer/vendor/autoload.php";
 
 try {
-
     $routeIndex = new Route('/');
     $routeAuthorization = new Route('/authorization');
     $routeRegistration = new Route('/registration');
@@ -48,6 +47,7 @@ if($parameters['_route'] === 'registration') {
 }
 
 if($parameters['_route'] === 'chat') {
+    echo "<script>window.WEBSOCKET_CONNECTION_URL = '{$_ENV['WEBSOCKET_CONNECTION_URL']}'</script>";
     require_once 'templates/chat-template.html';
     return;
 }
