@@ -5,24 +5,25 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Чат</title>
+    <title>Уютный чатик</title>
     <link rel="stylesheet" href="../assets/css/chat.css">
 </head>
 <body>
 
 <div class='chat'>
-    <div class='chat-messages'>
-        <div class='chat-messages__content' id='messages'>
-            Загруз очка
-        </div>
+    <div class='chat-messages' id="chat">
+        <div class='chat-messages__content' id='messages'> </div>
     </div>
     <div class='chat-input'>
         <form method='post' id='chat-form'>
             <input type='text' id='message-text' class='chat-form__input' placeholder='Введите сообщение'>
-            <button class='chat-form__submit'> Отправить </button>
+            <!--<input type="submit" value="send"/>!-->
+            <button type="submit" class='chat-form__submit'> 🔥 </button>
         </form>
     </div>
 </div>
+
+<script src="../assets/js/websocket.js"></script>
 
 </body>
 </html>
