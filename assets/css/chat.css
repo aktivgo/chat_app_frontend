@@ -28,7 +28,7 @@ body {
 
 .chat-info__logout {
     color: #E85A4F;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: bold;
     padding: 10px;
     background-color: #fff1d3;
@@ -47,6 +47,7 @@ body {
 }
 
 .chat-info {
+    font-size: 20px;
     border-radius: 15px;
     padding: 20px;
     margin: 0 0 0 50px;
@@ -57,6 +58,7 @@ body {
 }
 
 .chat {
+    font-size: 20px;
     border-radius: 15px;
     padding: 20px;
     margin: 0;
@@ -100,7 +102,7 @@ body {
 
 input {
     font-family: "Calibri", sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     vertical-align: middle;
     background: #fff1d3;
     color: #000000;

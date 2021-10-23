@@ -7,20 +7,18 @@ const form = document.getElementById('chat-form');
 const chat = document.getElementById('chat');
 const username = document.getElementById('username');
 const onlineList = document.getElementById('online-users');
-const chatInfo = document.getElementById('chat_info');
-
 const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
 let name;
 
-// Устанавливает статус
-function setStatus(value) {
-    status.innerHTML = value;
+function send(name, message) {
+    ws.send(JSON.stringify({
+        name, message
+    }))
 }
 
 // Соединение установлено
 ws.onopen = () => {
-    setStatus('ONLINE');
     $.ajax({
         url: 'http://users.api.loc/authorization',
         type: 'POST',
@@ -29,16 +27,12 @@ ws.onopen = () => {
             token: searchString.get('token')
         },
         success(data) {
-            // Получение имени пользователя
             name = data.fullName;
-            // Вывод сообщения о подлючении
-            const message = ' подключился к чату';
-            ws.send(JSON.stringify({
-                name, message
-            }))
+            send(name, ' подключился к чату')
+
             // Вывод имени пользователя в информационную панель
             const nameEl = document.createElement('div');
-            nameEl.appendChild(document.createTextNode(`ИМЯ: ${name}`));
+            nameEl.appendChild(document.createTextNode(`Ваше имя в чате: ${name}`));
             username.appendChild(nameEl);
         }
     });
@@ -53,37 +47,40 @@ ws.onmessage = (responseServer) => {
     chat.appendChild(div);
     chat.scrollTo(0, chat.scrollHeight);
 
-    while (chatInfo.firstChild) {
-        chatInfo.removeChild(chatInfo.firstChild);
-    }
-
     response.onlineUsersList.forEach((val) => {
         div = document.createElement('div');
         div.appendChild(document.createTextNode(val));
-        onlineList.appendChild(div);
+        if (onlineList) {
+            onlineList.appendChild(div);
+        }
     });
 };
 
 // Соединение закрыто
-ws.onclose = () => {
-    setStatus('OFFLINE');
-    // Вывод сообщения об отключении
-    const message = ' покинул чат';
-    ws.send(JSON.stringify({
-        name, message
-    }))
+ws.onclose = function(event) {
+    send(name, ' покинул чат');
+};
+
+// Ошибка
+ws.onerror = function(error) {
+    alert("Ошибка " + error.message);
 };
 
 // Отправка сообщения при нажатии кнопки
-form.addEventListener('submit', event => {
-    event.preventDefault();
-    const message = input.value;
-    if(message === '') return
-    ws.send(JSON.stringify({
-        name, message
-    }))
-    input.value = '';
-    return false;
+if (form) {
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        if(input.value === '') return
+        send(name, input.value)
+        input.value = '';
+    });
+}
+
+// Выход из чата
+$('button[id = "logout-btn"]').click(function (e) {
+    send(name, ' покинул чат');
+    ws.close();
+    document.location.href = '/'
 });
 
 /*form.addEventListener('submit', event => {

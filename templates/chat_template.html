@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Уютный чатик</title>
     <link rel="stylesheet" href="../assets/css/chat.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -22,19 +23,14 @@
     </div>
 </div>
 
-<span id="status">OFFLINE</span>
-
 <div class="chat-info" id="chat_info">
     <div class="chat-info__username" id="username"></div>
-    <div class="chat-info__online-users">Онлайн:</div>
+    <div class="chat-info__online-users">Пользователи онлайн:</div>
     <div class="chat-info__online-users" id="online-users"></div>
+    <button class='chat-info__logout' id="logout-btn">Выйти</button>
 </div>
 
-<button class='chat-info__logout' id="logout-btn">Выйти</button>
-
-
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="../assets/js/webSocket.js"></script>
+<script src="../assets/js/chat.js"></script>
 
 </body>
 </html>
