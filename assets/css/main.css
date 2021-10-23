@@ -49,6 +49,12 @@ a {
     font-weight: bold;
     text-decoration: none;
     color: #E98074;
+    transition: transform 0.2s, color 0.2s;
+}
+
+a:hover {
+    transform: scale(1.5);
+    color: #e3675a;
 }
 
 p {

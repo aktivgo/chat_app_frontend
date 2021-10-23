@@ -12,8 +12,9 @@ body {
     background-color: #EAE7DC;
 }
 
-button {
+.chat-form__submit {
     color: #989898;
+    font-size: 30px;
     font-weight: bold;
     margin: 0 0 0 20px;
     padding: 10px 50px;
@@ -25,8 +26,34 @@ button {
     display: block;
 }
 
-button:hover {
+.chat-info__logout {
+    color: #E85A4F;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #fff1d3;
+    border: unset;
+    cursor: pointer;
+    border-radius: 15px;
+    display: block;
+}
+
+.chat-form__submit:hover {
     transform: scale(1.1);
+}
+
+.chat-form__submit:active {
+    transform: scale(1);
+}
+
+.chat-info {
+    border-radius: 15px;
+    padding: 20px;
+    margin: 0 0 0 50px;
+    width: 20%;
+    height: 50%;
+    background: rgb(255, 255, 255);
+    color: #000000;
 }
 
 .chat {
@@ -40,8 +67,8 @@ button:hover {
 }
 
 .chat-messages {
-    min-height: 93%;
-    max-height: 93%;
+    min-height: 90%;
+    max-height: 90%;
     overflow: auto;
     margin: 0 0 10px 0;
 }
@@ -82,10 +109,11 @@ input {
     border-radius: 15px;
     padding: 10px;
     display: inline-block;
+    transition: box-shadow .2s;
 }
 
 input:focus, input:hover {
-    box-shadow: 0 0 0 1px #000000;
+    box-shadow: 0 0 0 1px #E85A4F;
 }
 
 .chat-form__input {

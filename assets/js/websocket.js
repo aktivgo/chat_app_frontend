@@ -15,6 +15,10 @@ $.ajax({
     }
 });
 
+const nameEl = document.createElement('div');
+nameEl.appendChild(document.createTextNode(`${name}`));
+username.appendChild(nameEl);
+
 ws.onmessage = (message) => {
     const messages = JSON.parse(message.data);
     const chat = document.getElementById('chat');
@@ -28,9 +32,11 @@ ws.onmessage = (message) => {
 const send = (event) => {
     event.preventDefault();
     const message = document.getElementById('message-text').value;
-    ws.send(JSON.stringify({
-        name, message
-    }))
+    if(message !== '') {
+        ws.send(JSON.stringify({
+            name, message
+        }))
+    }
     return false;
 }
 const formEl = document.getElementById('chat-form');
