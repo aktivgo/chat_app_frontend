@@ -89,7 +89,6 @@ $('button[id = "register-btn"]').click(function (e){
     Logout
  */
 $('button[id = "logout-btn"]').click(function (e) {
-    console.log("dsd");
     e.preventDefault();
     document.location.href = '/'
 });

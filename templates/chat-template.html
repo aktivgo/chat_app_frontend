@@ -7,27 +7,33 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Уютный чатик</title>
     <link rel="stylesheet" href="../assets/css/chat.css">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 </head>
 <body>
 
 <div class='chat'>
     <div class='chat-messages' id="chat">
-        <div class='chat-messages__content' id='messages'> </div>
+        <div class='chat-messages__content' id='messages'></div>
     </div>
     <div class='chat-input'>
         <form method='post' id='chat-form'>
             <input type='text' id='message-text' class='chat-form__input' placeholder='Введите сообщение'>
-            <button type="submit" class='chat-form__submit'> 🔥 </button>
+            <button type="submit" class='chat-form__submit'> 🔥</button>
         </form>
     </div>
 </div>
 
+<span id="status">OFFLINE</span>
+
 <div class="chat-info" id="chat_info">
     <div class="chat-info__username" id="username"></div>
-    <button class='chat-info__logout' id="logout-btn">Выйти</button>
+    <div class="chat-info__online-users">Онлайн:</div>
+    <div class="chat-info__online-users" id="online-users"></div>
 </div>
 
+<button class='chat-info__logout' id="logout-btn">Выйти</button>
+
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../assets/js/websocket.js"></script>
 
 </body>
