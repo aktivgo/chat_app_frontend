@@ -32,22 +32,22 @@ try {
 }
 
 if($parameters['_route'] === 'index') {
-    require_once 'templates/index-template.html';
+    require_once 'templates/index_template.html';
     return;
 }
 
 if($parameters['_route'] === 'authorization') {
-    require_once 'templates/authorization-template.html';
+    require_once 'templates/authorization_template.html';
     return;
 }
 
 if($parameters['_route'] === 'registration') {
-    require_once 'templates/registration-template.html';
+    require_once 'templates/registration_template.html';
     return;
 }
 
 if($parameters['_route'] === 'chat') {
     echo "<script>window.WEBSOCKET_CONNECTION_URL = '{$_ENV['WEBSOCKET_CONNECTION_URL']}'</script>";
-    require_once 'templates/chat-template.html';
+    require_once 'templates/chat_template.html';
     return;
 }
