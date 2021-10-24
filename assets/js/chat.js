@@ -34,6 +34,9 @@ ws.onopen = () => {
             username.appendChild(nameEl);
             // Добавляем пользователя в список онлайн пользователей
             addUser();
+        },
+        error() {
+            document.location.href = '/';
         }
     });
 };
@@ -41,7 +44,6 @@ ws.onopen = () => {
 // Получает данные с сервера
 ws.onmessage = (responseServer) => {
     const json = JSON.parse(responseServer.data);
-    console.log(json);
 
     switch (json.event) {
 
@@ -49,9 +51,7 @@ ws.onmessage = (responseServer) => {
             const userName = json.payload.userName;
             const userMessage = json.payload.userMessage;
             const div = document.createElement('div');
-            //div.appendChild(document.createTextNode(`${userName}: ${userMessage}`));
-            //div.textContent = `<strong>${userName}:</strong> ${userMessage}`;
-            if(userName === curUserName) {
+            if (userName === curUserName) {
                 div.style.textAlign = 'right';
                 div.innerHTML = `<strong>Вы: </strong>${userMessage}`
             } else {
@@ -71,16 +71,35 @@ ws.onmessage = (responseServer) => {
             chat.scrollTo(0, chat.scrollHeight);
 
             const onlineUsers = json.payload.onlineNames;
-            console.log(onlineUsers);
 
             while (onlineList.firstChild) {
                 onlineList.removeChild(onlineList.firstChild);
             }
 
-            onlineUsers.forEach(function(user) {
+            onlineUsers.forEach(function (user) {
                 const div = document.createElement('div');
                 div.appendChild(document.createTextNode('>' + user));
                 onlineList.appendChild(div);
+            });
+        }
+            break;
+
+        case 'getMessagesFromDb': {
+            console.log(json);
+            const userMessages = json.payload.results;
+
+            userMessages.forEach(function (userMessage) {
+                const name = userMessage.userName;
+                const message = userMessage.message;
+                const div = document.createElement('div');
+                if (name === curUserName) {
+                    div.style.textAlign = 'right';
+                    div.innerHTML = `<strong>Вы: </strong>${message}`
+                } else {
+                    div.innerHTML = `${name}: ${message}`
+                }
+                chat.appendChild(div);
+                chat.scrollTo(0, chat.scrollHeight);
             });
         }
             break;
@@ -122,69 +141,3 @@ $('button[id = "logout-btn"]').click(function () {
     window.onbeforeunload;
     document.location.href = '/'
 });
-
-/*form.addEventListener('submit', event => {
-    event.preventDefault();
-
-    const message = input.value;
-    if(message === '') return;
-    ws.send(JSON.stringify({
-        name, message
-    }));
-    input.value = '';
-});*/
-
-/*const send = (event) => {
-    event.preventDefault();
-    const message = document.getElementById('message-text').value;
-    if(message !== '') {
-        ws.send(JSON.stringify({
-            name, message
-        }))
-    }
-    return false;
-}
-const formEl = document.getElementById('chat-form');
-formEl.addEventListener('submit', send);*/
-
-/*
-let name;
-
-$.ajax({
-    url: 'http://users.api.loc/authorization',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-        token: searchString.get('token')
-    },
-    success(data) {
-        name = data.fullName;
-    }
-});
-
-const nameEl = document.createElement('div');
-nameEl.appendChild(document.createTextNode(`${name}`));
-username.appendChild(nameEl);
-
-ws.onmessage = (message) => {
-    const messages = JSON.parse(message.data);
-    const chat = document.getElementById('chat');
-    messages.forEach((val) => {
-        const messageEl = document.createElement('div');
-        messageEl.appendChild(document.createTextNode(`${val.name}: ${val.message}`));
-        chat.appendChild(messageEl);
-        chat.scrollTo(0, chat.scrollHeight);
-    })
-}
-const send = (event) => {
-    event.preventDefault();
-    const message = document.getElementById('message-text').value;
-    if(message !== '') {
-        ws.send(JSON.stringify({
-            name, message
-        }))
-    }
-    return false;
-}
-const formEl = document.getElementById('chat-form');
-formEl.addEventListener('submit', send);*/
