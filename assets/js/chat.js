@@ -9,12 +9,12 @@ const username = document.getElementById('username');
 const onlineList = document.getElementById('online-users');
 const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
-let userId;
-let userName;
+let curUserId;
+let curUserName;
 
-const sendMessage = (message) => ws.send(JSON.stringify({event: "sendMessage", payload: {userName, message}}));
-const addUser = () => ws.send(JSON.stringify({event: "addUser", payload: {userId, userName}}));
-const deleteUser = () => ws.send(JSON.stringify({event: "deleteUser", payload: {userId, userName}}));
+const sendMessage = (message) => ws.send(JSON.stringify({event: "sendMessage", payload: {curUserName, message}}));
+const addUser = () => ws.send(JSON.stringify({event: "addUser", payload: {curUserId, curUserName}}));
+const deleteUser = () => ws.send(JSON.stringify({event: "deleteUser", payload: {curUserId, curUserName}}));
 
 // Соединение установлено
 ws.onopen = () => {
@@ -26,11 +26,11 @@ ws.onopen = () => {
             token: searchString.get('token')
         },
         success(data) {
-            userId = data.id;
-            userName = data.fullName;
+            curUserId = data.id;
+            curUserName = data.fullName;
             // Выводим имя пользователя в информационную панель
             const nameEl = document.createElement('div');
-            nameEl.appendChild(document.createTextNode(`Ваше имя в чате: ${userName}`));
+            nameEl.innerHTML = `Ваше имя в чате: <strong>${curUserName}</strong>`;
             username.appendChild(nameEl);
             // Добавляем пользователя в список онлайн пользователей
             addUser();
@@ -49,7 +49,14 @@ ws.onmessage = (responseServer) => {
             const userName = json.payload.userName;
             const userMessage = json.payload.userMessage;
             const div = document.createElement('div');
-            div.appendChild(document.createTextNode(`${userName}: ${userMessage}`));
+            //div.appendChild(document.createTextNode(`${userName}: ${userMessage}`));
+            //div.textContent = `<strong>${userName}:</strong> ${userMessage}`;
+            if(userName === curUserName) {
+                div.style.textAlign = 'right';
+                div.innerHTML = `<strong>Вы: </strong>${userMessage}`
+            } else {
+                div.innerHTML = `${userName}: ${userMessage}`
+            }
             chat.appendChild(div);
             chat.scrollTo(0, chat.scrollHeight);
         }
@@ -58,7 +65,8 @@ ws.onmessage = (responseServer) => {
         case 'eventUser': {
             const infoMessage = json.payload.infoMessage;
             const div = document.createElement('div');
-            div.appendChild(document.createTextNode(infoMessage));
+            div.style.textAlign = 'center';
+            div.innerHTML = infoMessage;
             chat.appendChild(div);
             chat.scrollTo(0, chat.scrollHeight);
 
