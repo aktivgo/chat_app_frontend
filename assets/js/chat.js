@@ -9,13 +9,12 @@ const username = document.getElementById('username');
 const onlineList = document.getElementById('online-users');
 const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
-let name;
+let userId;
+let userName;
 
-function send(name, message) {
-    ws.send(JSON.stringify({
-        name, message
-    }))
-}
+const sendMessage = (message) => ws.send(JSON.stringify({event: "sendMessage", payload: {userName, message}}));
+const addUser = () => ws.send(JSON.stringify({event: "addUser", payload: {userId, userName}}));
+const deleteUser = () => ws.send(JSON.stringify({event: "deleteUser", payload: {userId, userName}}));
 
 // Соединение установлено
 ws.onopen = () => {
@@ -27,59 +26,87 @@ ws.onopen = () => {
             token: searchString.get('token')
         },
         success(data) {
-            name = data.fullName;
-            send(name, ' подключился к чату')
-
-            // Вывод имени пользователя в информационную панель
+            userId = data.id;
+            userName = data.fullName;
+            // Выводим имя пользователя в информационную панель
             const nameEl = document.createElement('div');
-            nameEl.appendChild(document.createTextNode(`Ваше имя в чате: ${name}`));
+            nameEl.appendChild(document.createTextNode(`Ваше имя в чате: ${userName}`));
             username.appendChild(nameEl);
+            // Добавляем пользователя в список онлайн пользователей
+            addUser();
         }
     });
 };
 
 // Получает данные с сервера
 ws.onmessage = (responseServer) => {
-    const response = JSON.parse(responseServer.data);
+    const json = JSON.parse(responseServer.data);
+    console.log(json);
 
-    let div = document.createElement('div');
-    div.appendChild(document.createTextNode(`${response.name}: ${response.message}`));
-    chat.appendChild(div);
-    chat.scrollTo(0, chat.scrollHeight);
+    switch (json.event) {
 
-    response.onlineUsersList.forEach((val) => {
-        div = document.createElement('div');
-        div.appendChild(document.createTextNode(val));
-        if (onlineList) {
-            onlineList.appendChild(div);
+        case 'sendMessage': {
+            const userName = json.payload.userName;
+            const userMessage = json.payload.userMessage;
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(`${userName}: ${userMessage}`));
+            chat.appendChild(div);
+            chat.scrollTo(0, chat.scrollHeight);
         }
-    });
+            break;
+
+        case 'eventUser': {
+            const infoMessage = json.payload.infoMessage;
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(infoMessage));
+            chat.appendChild(div);
+            chat.scrollTo(0, chat.scrollHeight);
+
+            const onlineUsers = json.payload.onlineUsersList;
+            console.log(onlineUsers);
+            for (let value of onlineUsers) {
+                const div = document.createElement('div');
+                div.appendChild(document.createTextNode(value.toString()));
+                onlineList.appendChild(div);
+            }
+        }
+            break;
+
+        case 'error': {
+            const error = json.payload.error;
+            alert(error);
+        }
+            break;
+    }
 };
 
+// Происходит после закрытия страницы
+window.onbeforeunload = function () {
+    deleteUser();
+    ws.close();
+}
+
 // Соединение закрыто
-ws.onclose = function(event) {
-    send(name, ' покинул чат');
+ws.onclose = function (event) {
+    deleteUser();
 };
 
 // Ошибка
-ws.onerror = function(error) {
+ws.onerror = function (error) {
     alert("Ошибка " + error.message);
 };
 
 // Отправка сообщения при нажатии кнопки
-if (form) {
-    form.addEventListener('submit', event => {
-        event.preventDefault();
-        if(input.value === '') return
-        send(name, input.value)
-        input.value = '';
-    });
-}
+form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (input.value === '') return
+    sendMessage(input.value)
+    input.value = '';
+});
 
-// Выход из чата
-$('button[id = "logout-btn"]').click(function (e) {
-    send(name, ' покинул чат');
-    ws.close();
+// Обработчик кнопки выход
+$('button[id = "logout-btn"]').click(function () {
+    window.onbeforeunload;
     document.location.href = '/'
 });
 
