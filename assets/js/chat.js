@@ -62,13 +62,18 @@ ws.onmessage = (responseServer) => {
             chat.appendChild(div);
             chat.scrollTo(0, chat.scrollHeight);
 
-            const onlineUsers = json.payload.onlineUsersList;
+            const onlineUsers = json.payload.onlineNames;
             console.log(onlineUsers);
-            for (let value of onlineUsers) {
-                const div = document.createElement('div');
-                div.appendChild(document.createTextNode(value.toString()));
-                onlineList.appendChild(div);
+
+            while (onlineList.firstChild) {
+                onlineList.removeChild(onlineList.firstChild);
             }
+
+            onlineUsers.forEach(function(user) {
+                const div = document.createElement('div');
+                div.appendChild(document.createTextNode('>' + user));
+                onlineList.appendChild(div);
+            });
         }
             break;
 
