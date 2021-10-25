@@ -12,6 +12,11 @@ body {
     background-color: #EAE7DC;
 }
 
+/* ЧАТ */
+
+
+/* ИНФОРМАЦИЯ О ЧАТЕ */
+
 .chat-form__submit {
     color: #989898;
     font-size: 30px;
@@ -23,19 +28,51 @@ body {
     cursor: pointer;
     border-radius: 15px;
     transition: transform .2s;
-    display: block;
 }
 
-.chat-info__logout {
+.chat-input {
+    vertical-align: bottom;
+}
+
+.online-users-list {
+    overflow: auto;
+}
+
+.chat-info__online-users {
+    font-size: 20px;
+    margin-bottom: 20px;
+    height: 78%;
+}
+
+.chat-info__username {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.logout-btn {
     color: #E85A4F;
     font-size: 20px;
     font-weight: bold;
-    padding: 10px;
+    padding: 10px 30px;
     background-color: #fff1d3;
     border: unset;
     cursor: pointer;
     border-radius: 15px;
-    display: block;
+    transition: transform .2s;
+    display: flex;
+    margin: 0 auto;
+}
+
+.online-users-label {
+    margin-bottom: 10px;
+}
+
+.logout-btn:hover {
+    transform: scale(1.1);
+}
+
+.logout-btn:active {
+    transform: scale(1);
 }
 
 .chat-form__submit:hover {
@@ -47,7 +84,6 @@ body {
 }
 
 .chat-info {
-    font-size: 20px;
     border-radius: 15px;
     padding: 20px;
     margin: 0 0 0 50px;
@@ -55,6 +91,7 @@ body {
     height: 50%;
     background: rgb(255, 255, 255);
     color: #000000;
+    box-shadow: 0 5px 10px #ccc;
 }
 
 .chat {
@@ -66,17 +103,17 @@ body {
     height: 70%;
     background: rgb(255, 255, 255);
     color: #000000;
+    box-shadow: 0 5px 10px #ccc;
+}
+
+.chat-message {
+    margin-bottom: 10px;
 }
 
 .chat-messages {
-    min-height: 90%;
-    max-height: 90%;
+    height: 88%;
     overflow: auto;
-    margin: 0 0 10px 0;
-}
-
-.chat-messages__content {
-    padding: 1px;
+    margin: 0 0 20px 0;
 }
 
 .chat__message {

@@ -12,9 +12,7 @@
 <body>
 
 <div class='chat'>
-    <div class='chat-messages' id="chat">
-        <div class='chat-messages__content' id='messages'></div>
-    </div>
+    <div class='chat-messages' id="chat"></div>
     <div class='chat-input'>
         <form method='post' id='chat-form'>
             <input type='text' id='message-text' class='chat-form__input' placeholder='Введите сообщение'>
@@ -26,10 +24,10 @@
 <div class="chat-info" id="chat_info">
     <div class="chat-info__username" id="username"></div>
     <div class="chat-info__online-users">
-        Пользователи онлайн:
-        <div class="chat-info__online-users" id="online-users"></div>
+        <div class="online-users-label">Пользователи онлайн:</div>
+        <div id="online-users-list"></div>
     </div>
-    <button class='chat-info__logout' id="logout-btn">Выйти</button>
+    <button class='logout-btn' id="logout-btn">Выйти</button>
 </div>
 
 <script src="../assets/js/chat.js"></script>

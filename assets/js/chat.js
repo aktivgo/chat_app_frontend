@@ -6,7 +6,7 @@ const input = document.getElementById('message-text');
 const form = document.getElementById('chat-form');
 const chat = document.getElementById('chat');
 const username = document.getElementById('username');
-const onlineList = document.getElementById('online-users');
+const onlineList = document.getElementById('online-users-list');
 const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
 let curUserId;
@@ -51,6 +51,7 @@ ws.onmessage = (responseServer) => {
             const userName = json.payload.userName;
             const userMessage = json.payload.userMessage;
             const div = document.createElement('div');
+            div.classList.add('chat-message')
             if (userName === curUserName) {
                 div.style.textAlign = 'right';
                 div.innerHTML = `<strong>Вы: </strong>${userMessage}`
@@ -65,6 +66,7 @@ ws.onmessage = (responseServer) => {
         case 'eventUser': {
             const infoMessage = json.payload.infoMessage;
             const div = document.createElement('div');
+            div.classList.add('chat-message')
             div.style.textAlign = 'center';
             div.innerHTML = infoMessage;
             chat.appendChild(div);
@@ -78,20 +80,20 @@ ws.onmessage = (responseServer) => {
 
             onlineUsers.forEach(function (user) {
                 const div = document.createElement('div');
-                div.appendChild(document.createTextNode('>' + user));
+                div.appendChild(document.createTextNode('> ' + user));
                 onlineList.appendChild(div);
             });
         }
             break;
 
         case 'getMessagesFromDb': {
-            console.log(json);
             const userMessages = json.payload.results;
 
             userMessages.forEach(function (userMessage) {
                 const name = userMessage.userName;
                 const message = userMessage.message;
                 const div = document.createElement('div');
+                div.classList.add('chat-message')
                 if (name === curUserName) {
                     div.style.textAlign = 'right';
                     div.innerHTML = `<strong>Вы: </strong>${message}`
