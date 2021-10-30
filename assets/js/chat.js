@@ -189,11 +189,12 @@ ws.onmessage = (responseServer) => {
         }
             break;
 
-        case 'exit': {
-            console.log('Соединение закрыто');
-            alert('Соединение закрыто');
-            ws.close();
-            document.location.href = '/';
+        case 'checkToken': {
+            if (!localStorage.getItem('userToken')) {
+                ws.close();
+                alert('Соединение закрыто');
+                setTimeout(() => document.location.href = '/', 5000);
+            }
         }
             break;
 
