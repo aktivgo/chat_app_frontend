@@ -1,3 +1,5 @@
+@import "../fonts/SFUIText/style.css";
+
 * {
     margin: 0;
     padding: 0;
@@ -8,12 +10,61 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: "Calibri", sans-serif;
+    font-family: 'SF UI Text', sans-serif;
     background-color: #EAE7DC;
+}
+
+.none {
+    display: none;
 }
 
 /* ЧАТ */
 
+.chat-message-container_yours {
+    padding: 10px;
+    margin: 0 10px 20px;
+    background-color: #fff1d3;
+    border-radius: 15px;
+    clear: both;
+    word-wrap: break-word;
+    float: right;
+}
+
+.chat-message-container_another {
+    padding: 10px;
+    margin: 0 10px 20px;
+    background-color: #fff1d3;
+    border-radius: 15px;
+    clear: both;
+    word-wrap: break-word;
+    float: left;
+}
+
+.chat-message_yours {
+    text-align: right;
+}
+
+.chat-message_another {
+    text-align: left;
+}
+
+.chat-message_time_yours {
+    font-size: 15px;
+    text-align: right;
+}
+
+.chat-message_time_another {
+    font-size: 15px;
+    text-align: left;
+}
+
+.chat-info_message {
+    padding: 10px;
+    margin: 0 10px 10px;
+    text-align: center;
+    clear: both;
+    display: block;
+}
 
 /* ИНФОРМАЦИЯ О ЧАТЕ */
 
@@ -104,10 +155,6 @@ body {
     background: rgb(255, 255, 255);
     color: #000000;
     box-shadow: 0 5px 10px #ccc;
-}
-
-.chat-message {
-    margin-bottom: 10px;
 }
 
 .chat-messages {

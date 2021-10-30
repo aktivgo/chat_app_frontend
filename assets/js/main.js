@@ -1,3 +1,7 @@
+if(localStorage.getItem('userToken')) {
+    window.location.href = '/chat';
+}
+
 /*
     Authorization
  */
@@ -20,7 +24,8 @@ $('button[id = "login-btn"]').click(function (e){
         },
         success(data) {
             if(data.status){
-                document.location.href = '/chat?token=' + data.token;
+                localStorage.setItem('userToken', data.token);
+                document.location.href = '/chat';
             } else{
                 data.fields.forEach(function (field) {
                     $(`input[name="${field}"]`).addClass('error');
