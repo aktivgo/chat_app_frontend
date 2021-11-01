@@ -107,10 +107,8 @@ function printFirstPageMessages(userName, message, time) {
 }
 
 function printMessageWhenScrolling(userName, message, time) {
-    const scroll = chat.scrollTop;
     const container = createMessageContainer(userName, message, time)
     chat.insertBefore(container, chat.firstChild);
-    //chat.scrollTo(0, chat.scrollTop - scroll);
 }
 
 function printInfoMessage(message) {
@@ -129,83 +127,102 @@ ws.onmessage = (responseServer) => {
     switch (json.event) {
 
         case 'sendInfoMessage': {
-            const userName = json.payload.userName;
-            const message = json.payload.message;
-            if (!userName || !message) return;
-
-            printInfoMessage(userName + ' ' + message);
+            sendInfoMessageEvent(json.payload.userName, json.payload.message);
         }
             break;
 
         case 'sendOnlineList': {
-            const onlineUsers = json.payload.onlineNames;
-            if (!onlineUsers) return;
-
-            while (onlineList.firstChild) {
-                onlineList.removeChild(onlineList.firstChild);
-            }
-
-            onlineUsers.forEach(function (user) {
-                const div = document.createElement('div');
-                div.innerHTML = '> ' + user;
-                onlineList.appendChild(div);
-            });
+            sendOnlineListEvent(json.payload.onlineNames);
         }
             break;
 
         case 'loadingFirstPageMessagesFromDb': {
-            const userMessages = json.payload.results;
-            if (!userMessages) return;
-
-            userMessages.forEach(function (userMessage) {
-                const userName = userMessage.userName;
-                const message = userMessage.message;
-                const time = userMessage.time;
-                printFirstPageMessages(userName, message, time);
-            });
+            loadingFirstPageMessagesFromDbEvent(json.payload.results);
         }
             break;
 
         case 'loadingPageMessagesFromDb': {
-            const userMessages = json.payload.results;
-            if (!userMessages) return;
-
-            userMessages.forEach(function (userMessage) {
-                const userName = userMessage.userName;
-                const message = userMessage.message;
-                const time = userMessage.time;
-                printMessageWhenScrolling(userName, message, time);
-            });
+            loadingPageMessagesFromDbEvent(json.payload.results);
         }
             break;
 
         case 'sendMessage': {
-            const userName = json.payload.userName;
-            const message = json.payload.message;
-            const time = json.payload.time;
-            if (!userName || !message || !time) return;
-
-            printMessage(userName, message, time);
+            sendMessageEvent(json.payload.userName, json.payload.message, json.payload.time);
         }
             break;
 
         case 'checkToken': {
-            if (!localStorage.getItem('userToken')) {
-                ws.close();
-                alert('Соединение закрыто');
-                setTimeout(() => document.location.href = '/', 5000);
-            }
+            checkTokenEvent();
         }
             break;
 
         case 'error': {
-            const error = json.payload.error;
-            if (!error) return;
-            alert(error);
+            errorEvent(json.payload.error);
         }
             break;
     }
 };
+
+function sendInfoMessageEvent(userName, message) {
+    if (!userName || !message) return;
+
+    printInfoMessage(userName + ' ' + message);
+}
+
+function sendOnlineListEvent(onlineUsers){
+    if (!onlineUsers) return;
+
+    while (onlineList.firstChild) {
+        onlineList.removeChild(onlineList.firstChild);
+    }
+
+    onlineUsers.forEach(function (user) {
+        const div = document.createElement('div');
+        div.innerHTML = '> ' + user;
+        onlineList.appendChild(div);
+    });
+}
+
+function loadingFirstPageMessagesFromDbEvent(userMessages) {
+    if (!userMessages) return;
+
+    userMessages.forEach(function (userMessage) {
+        const userName = userMessage.userName;
+        const message = userMessage.message;
+        const time = userMessage.time;
+        printFirstPageMessages(userName, message, time);
+    });
+}
+
+function loadingPageMessagesFromDbEvent(userMessages) {
+    if (!userMessages) return;
+
+    userMessages.forEach(function (userMessage) {
+        const userName = userMessage.userName;
+        const message = userMessage.message;
+        const time = userMessage.time;
+        printMessageWhenScrolling(userName, message, time);
+    });
+}
+
+function sendMessageEvent(userName, message, time) {
+    if (!userName || !message || !time) return;
+
+    printMessage(userName, message, time);
+}
+
+function checkTokenEvent() {
+    if (localStorage.getItem('userToken')) return;
+    ws.close();
+    alert('Соединение закрыто');
+    setTimeout(() => document.location.href = '/', 5000);
+}
+
+function errorEvent(error){
+    if (!error) return;
+
+    alert(error);
+}
 
 window.onbeforeunload = function () {
     disconnection();
