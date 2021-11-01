@@ -8,9 +8,11 @@ const onlineList = document.getElementById('online-users-list');
 
 const ws = new WebSocket(window.WEBSOCKET_CONNECTION_URL);
 
+// id и имя текущего пользователя
 let curUserId;
 let curUserName;
 
+// Запросы на сервер
 const sendMessage = (message) => {
     let options = {
         month: 'numeric',
@@ -28,13 +30,14 @@ const disconnection = () => ws.send(JSON.stringify({
     event: 'disconnection',
     payload: {userId: curUserId, userName: curUserName}
 }));
-
 const exit = () => ws.send(JSON.stringify({
     event: 'exit',
     payload: {userId: curUserId, userName: curUserName}
 }));
 
-// Соединение установлено
+/*
+ Соединение установлено
+ */
 ws.onopen = () => {
     const token = localStorage.getItem('userToken');
 
@@ -44,9 +47,16 @@ ws.onopen = () => {
         return;
     }
 
+    removeClassNone();
+    makeAjaxRequest(token);
+};
+
+function removeClassNone() {
     document.getElementById('chat_box').classList.remove('none');
     document.getElementById('chat-info_box').classList.remove('none');
+}
 
+function makeAjaxRequest(token) {
     $.ajax({
         url: 'http://users.api.loc/authorization',
         type: 'POST',
@@ -58,68 +68,22 @@ ws.onopen = () => {
             curUserId = data.id;
             curUserName = data.fullName;
 
-            // Выводим имя пользователя в информационную панель
-            const nameEl = document.createElement('div');
-            nameEl.innerHTML = `Ваше имя в чате: <strong>${curUserName}</strong>`;
-            usernameContainer.appendChild(nameEl);
-
-            // Добавляем пользователя в список онлайн пользователей
+            printUserName();
             connection(token);
         }
     });
-};
-
-function createMessageContainer(userName, message, time) {
-    const divContainer = document.createElement('div');
-
-    const divMessage = document.createElement('div');
-    const divTime = document.createElement('div');
-
-    if (userName === curUserName) {
-        divContainer.classList.add('chat-message-container_yours')
-        divMessage.classList.add('chat-message_yours');
-        divMessage.innerHTML = `<strong>Вы: </strong>${message}`
-        divTime.classList.add('chat-message_time_yours');
-    } else {
-        divContainer.classList.add('chat-message-container_another')
-        divMessage.classList.add('chat-message_another');
-        divMessage.innerHTML = `${userName}: ${message}`
-        divTime.classList.add('chat-message_time_another');
-    }
-
-    divTime.innerHTML = `<i>${time}</i>`;
-
-    divContainer.appendChild(divMessage);
-    divContainer.appendChild(divTime);
-    return divContainer;
 }
 
-function printMessage(userName, message, time) {
-    const container = createMessageContainer(userName, message, time)
-    chat.appendChild(container);
-    chat.scrollTo(0, chat.scrollHeight);
+function printUserName() {
+    const nameEl = document.createElement('div');
+    nameEl.innerHTML = `Ваше имя в чате: <strong>${curUserName}</strong>`;
+    usernameContainer.appendChild(nameEl);
 }
 
-function printFirstPageMessages(userName, message, time) {
-    const container = createMessageContainer(userName, message, time)
-    chat.insertBefore(container, chat.firstChild);
-    chat.scrollTo(0, chat.scrollHeight);
-}
 
-function printMessageWhenScrolling(userName, message, time) {
-    const container = createMessageContainer(userName, message, time)
-    chat.insertBefore(container, chat.firstChild);
-}
-
-function printInfoMessage(message) {
-    const div = document.createElement('div');
-    div.classList.add('chat-info_message')
-    div.innerHTML = message;
-    chat.appendChild(div);
-    chat.scrollTo(0, chat.scrollHeight);
-}
-
-// Получает данные с сервера
+/*
+ Получение сообщений от сервера
+ */
 ws.onmessage = (responseServer) => {
     const json = JSON.parse(responseServer.data);
     if (!json || !json.event || !json.payload) return;
@@ -131,8 +95,8 @@ ws.onmessage = (responseServer) => {
         }
             break;
 
-        case 'sendOnlineList': {
-            sendOnlineListEvent(json.payload.onlineNames);
+        case 'updateOnlineList': {
+            updateOnlineListEvent(json.payload.onlineNames);
         }
             break;
 
@@ -169,13 +133,33 @@ function sendInfoMessageEvent(userName, message) {
     printInfoMessage(userName + ' ' + message);
 }
 
-function sendOnlineListEvent(onlineUsers){
+function printInfoMessage(message) {
+    const container = createInfoMessageContainer(message);
+    chat.appendChild(container);
+    chat.scrollTo(0, chat.scrollHeight);
+}
+
+function createInfoMessageContainer(message) {
+    const container = document.createElement('div');
+    container.classList.add('chat-info_message')
+    container.innerHTML = message;
+    return container;
+}
+
+function updateOnlineListEvent(onlineUsers) {
     if (!onlineUsers) return;
 
+    clearOnlineUsersContainer();
+    printOnlineUsers(onlineUsers);
+}
+
+function clearOnlineUsersContainer() {
     while (onlineList.firstChild) {
         onlineList.removeChild(onlineList.firstChild);
     }
+}
 
+function printOnlineUsers(onlineUsers) {
     onlineUsers.forEach(function (user) {
         const div = document.createElement('div');
         div.innerHTML = '> ' + user;
@@ -194,6 +178,41 @@ function loadingFirstPageMessagesFromDbEvent(userMessages) {
     });
 }
 
+function printFirstPageMessages(userName, message, time) {
+    printMessagesWhenScrolling(userName, message, time)
+    chat.scrollTo(0, chat.scrollHeight);
+}
+
+function printMessagesWhenScrolling(userName, message, time) {
+    const container = createMessageContainer(userName, message, time)
+    chat.insertBefore(container, chat.firstChild);
+}
+
+function createMessageContainer(userName, message, time) {
+    const divContainer = document.createElement('div');
+
+    const divMessage = document.createElement('div');
+    const divTime = document.createElement('div');
+
+    if (userName === curUserName) {
+        divContainer.classList.add('chat-message-container_yours')
+        divMessage.classList.add('chat-message_yours');
+        divMessage.innerHTML = `<strong>Вы: </strong>${message}`
+        divTime.classList.add('chat-message_time_yours');
+    } else {
+        divContainer.classList.add('chat-message-container_another')
+        divMessage.classList.add('chat-message_another');
+        divMessage.innerHTML = `${userName}: ${message}`
+        divTime.classList.add('chat-message_time_another');
+    }
+
+    divTime.innerHTML = `<i>${time}</i>`;
+
+    divContainer.appendChild(divMessage);
+    divContainer.appendChild(divTime);
+    return divContainer;
+}
+
 function loadingPageMessagesFromDbEvent(userMessages) {
     if (!userMessages) return;
 
@@ -201,7 +220,7 @@ function loadingPageMessagesFromDbEvent(userMessages) {
         const userName = userMessage.userName;
         const message = userMessage.message;
         const time = userMessage.time;
-        printMessageWhenScrolling(userName, message, time);
+        printMessagesWhenScrolling(userName, message, time);
     });
 }
 
@@ -211,6 +230,12 @@ function sendMessageEvent(userName, message, time) {
     printMessage(userName, message, time);
 }
 
+function printMessage(userName, message, time) {
+    const container = createMessageContainer(userName, message, time)
+    chat.appendChild(container);
+    chat.scrollTo(0, chat.scrollHeight);
+}
+
 function checkTokenEvent() {
     if (localStorage.getItem('userToken')) return;
     ws.close();
@@ -218,25 +243,24 @@ function checkTokenEvent() {
     setTimeout(() => document.location.href = '/', 5000);
 }
 
-function errorEvent(error){
+function errorEvent(error) {
     if (!error) return;
 
     alert(error);
 }
+
 
 window.onbeforeunload = function () {
     disconnection();
     ws.close();
 }
 
-// Ошибка
 ws.onerror = function (error) {
     alert("Ошибка " + error.message);
 };
 
 let page = 2;
-
-chat.addEventListener('scroll', event => {
+chat.addEventListener('scroll', () => {
     if (chat.scrollTop < 100) {
         getPageMessagesFromDb(page++);
     }
@@ -245,8 +269,8 @@ chat.addEventListener('scroll', event => {
 // Отправка сообщения при нажатии кнопки
 form.addEventListener('submit', event => {
     event.preventDefault();
-    if (input.value === '') return
-    sendMessage(input.value)
+    if (input.value === '') return;
+    sendMessage(input.value);
     input.value = '';
 });
 
