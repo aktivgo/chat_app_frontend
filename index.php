@@ -50,6 +50,7 @@ if($parameters['_route'] === 'registration') {
 
 if($parameters['_route'] === 'chat') {
     echo "<script>window.WEBSOCKET_CONNECTION_URL = '{$_ENV['WEBSOCKET_CONNECTION_URL']}'</script>";
+    echo "<script>window.AUTHENTICATION_URL = '{$_ENV['AUTHENTICATION_URL']}'</script>";
     require_once 'templates/chat_template.html';
     return;
 }

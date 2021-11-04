@@ -40,7 +40,6 @@ const exit = () => ws.send(JSON.stringify({
  */
 ws.onopen = () => {
     const token = localStorage.getItem('userToken');
-
     if (!token) {
         ws.close();
         document.location.href = '/';
@@ -58,7 +57,7 @@ function removeClassNone() {
 
 function makeAjaxRequest(token) {
     $.ajax({
-        url: 'http://users.api.loc/authorization',
+        url: window.AUTHENTICATION_URL,
         type: 'POST',
         dataType: 'json',
         data: {
