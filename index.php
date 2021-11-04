@@ -37,11 +37,13 @@ if($parameters['_route'] === 'index') {
 }
 
 if($parameters['_route'] === 'authorization') {
+    echo "<script>window.AUTHORIZATION_URL = '{$_ENV['AUTHORIZATION_URL']}'</script>";
     require_once 'templates/authorization_template.html';
     return;
 }
 
 if($parameters['_route'] === 'registration') {
+    echo "<script>window.REGISTRATION_URL = '{$_ENV['REGISTRATION_URL']}'</script>";
     require_once 'templates/registration_template.html';
     return;
 }

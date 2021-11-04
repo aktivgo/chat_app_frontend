@@ -15,7 +15,7 @@ $('button[id = "login-btn"]').click(function (e){
         password = $('input[name = "password"]').val();
 
     $.ajax({
-        url: 'http://users.api.loc/signin',
+        url: window.AUTHORIZATION_URL,
         type: 'POST',
         dataType: 'json',
         data: {
@@ -37,16 +37,6 @@ $('button[id = "login-btn"]').click(function (e){
 });
 
 /*
-    Getting avatar from file
- */
-
-let avatar = false;
-
-$('input[name="avatar"]').change(function (e){
-    avatar = e.target.files[0];
-});
-
-/*
     Registration
  */
 
@@ -57,20 +47,17 @@ $('button[id = "register-btn"]').click(function (e){
 
     let fullName = $('input[name = "fullName"]').val(),
         login = $('input[name = "login"]').val(),
-        email = $('input[name = "email"]').val(),
         password = $('input[name = "password"]').val(),
         passwordConfirm = $('input[name = "passwordConfirm"]').val();
 
     let formData = new FormData();
     formData.append('fullName', fullName);
     formData.append('login', login);
-    formData.append('email', email);
-    formData.append('avatar', avatar);
     formData.append('password', password);
     formData.append('passwordConfirm', passwordConfirm);
 
     $.ajax({
-        url: 'http://users.api.loc/signup',
+        url: window.REGISTRATION_URL,
         type: 'POST',
         dataType: 'json',
         processData: false,
